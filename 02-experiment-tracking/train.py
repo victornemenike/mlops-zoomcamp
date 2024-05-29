@@ -29,9 +29,6 @@ def load_pickle(filename: str):
 
 def run_train(data_path: str):
     with mlflow.start_run():
-        mlflow.set_tag('developer', 'victor')
-        mlflow.log_param('train-data-path', './datasets/green_tripdata_2023-01.parquet')
-        mlflow.log_param('val-data-path', './datasets/green_tripdata_2023-02.parquet')
 
         X_train, y_train = load_pickle(os.path.join(data_path, "train.pkl"))
         X_val, y_val = load_pickle(os.path.join(data_path, "val.pkl"))
@@ -44,13 +41,6 @@ def run_train(data_path: str):
         rmse = mse**0.5
         mlflow.log_metric("rmse", rmse)
 
-        with open('models/random_forest.bin', 'wb') as f_out:
-            pickle.dump(rf, f_out)
-
-        mlflow.log_artifact(local_path ='models/random_forest.bin', artifact_path = 'models_pickle' )
-        mlflow.sklearn.log_model(rf, artifact_path = 'models_mlflow' )
-
-        
 
 
 if __name__ == '__main__':
