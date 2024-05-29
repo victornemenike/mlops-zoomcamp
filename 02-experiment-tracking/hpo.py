@@ -35,11 +35,12 @@ def run_optimization(data_path: str, num_trials: int):
 
     def objective(params):
 
+        mlflow.log_params(params)
         rf = RandomForestRegressor(**params)
         rf.fit(X_train, y_train)
         y_pred = rf.predict(X_val)
         rmse = mean_squared_error(y_val, y_pred, squared=False)
-
+        mlflow.log_metric("val_rmse", rmse)
         return {'loss': rmse, 'status': STATUS_OK}
 
     search_space = {
