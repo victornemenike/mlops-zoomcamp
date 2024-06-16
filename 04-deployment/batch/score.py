@@ -38,6 +38,9 @@ def apply_model(input_file, model_file, year, month, output_file):
     print(f'applying the model...')
     X_val = dv.transform(dicts)
     y_pred = model.predict(X_val)
+
+    print(f'The mean of the predicted duration is {y_pred.mean():.2f}')
+    print(f'The standard deviation of the predicted duration is {y_pred.std():.2f}')
     
     print(f'saving the result to {output_file}...')
     df['ride_id'] = f'{year:04d}/{month:02d}_' + df.index.astype('str')
@@ -52,11 +55,10 @@ def apply_model(input_file, model_file, year, month, output_file):
 
 
 def run():
-    taxi_type = sys.argv[1] # 'yellow'
-    year = int(sys.argv[2]) # 2023
-    month = int(sys.argv[3]) # 3
-
-    model_file = sys.argv[4] #'model.bin'
+    year = int(sys.argv[1]) # 2023
+    month = int(sys.argv[2]) # 3
+    taxi_type = 'yellow'
+    model_file = 'model.bin'
     
     input_file = f'https://d37ci6vzurychx.cloudfront.net/trip-data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
     output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
