@@ -1,6 +1,7 @@
 import batch
 from datetime import datetime
 import pandas as pd
+from deepdiff import DeepDiff
 
 def dt(hour, minute, second=0):
     return datetime(2023, 1, 1, hour, minute, second)
@@ -32,3 +33,8 @@ def test_prepare_data():
     expected_df_list_dicts = expected_df.to_dict('records')
 
     assert actual_df_list_dicts == expected_df_list_dicts
+
+    diff = DeepDiff(actual_df_list_dicts, expected_df_list_dicts)
+    print(f'diff = {diff}')
+
+    assert 'type_changes' not in diff
