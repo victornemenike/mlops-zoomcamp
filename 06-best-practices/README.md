@@ -11,7 +11,7 @@ aws --endpoint-url=http://localhost:4566 s3 ls s3://nyc-duration --recursive
 ```
 
 ```bash
->aws --endpoint-url=http://localhost:4566 s3 ls s3://nyc-duration \
+aws --endpoint-url=http://localhost:4566 s3 ls s3://nyc-duration \
  --recursive --human-readable --summarize
 ```
 
