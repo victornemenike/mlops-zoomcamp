@@ -3,8 +3,8 @@
 
 import os
 import pickle
-import pandas as pd
 
+import pandas as pd
 
 
 def get_input_path(year, month):
@@ -20,21 +20,18 @@ def get_output_path(year, month):
 
 
 def read_data(s3_file_location):
-    options = {
-    'client_kwargs': {
-        'endpoint_url': 'http://localhost:4566'
-        }
-    }
+    options = {'client_kwargs': {'endpoint_url': 'http://localhost:4566'}}
 
     df = pd.read_parquet(s3_file_location, storage_options=options)
 
     return df
 
+
 def prepare_data(df, categorical):
     '''
-        Input -> df, categorical
-        Transforms df
-        Returns -> transformed df
+    Input -> df, categorical
+    Transforms df
+    Returns -> transformed df
     '''
     df['duration'] = df.tpep_dropoff_datetime - df.tpep_pickup_datetime
     df['duration'] = df.duration.dt.total_seconds() / 60
@@ -44,19 +41,16 @@ def prepare_data(df, categorical):
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
     return df
 
+
 def save_data(df_result, output_file):
-    options = {
-    'client_kwargs': {
-        'endpoint_url': 'http://localhost:4566'
-        }
-    }
+    options = {'client_kwargs': {'endpoint_url': 'http://localhost:4566'}}
 
     df_result.to_parquet(
-    output_file,
-    engine='pyarrow',
-    compression=None,
-    index=False,
-    storage_options=options
+        output_file,
+        engine='pyarrow',
+        compression=None,
+        index=False,
+        storage_options=options,
     )
 
 
