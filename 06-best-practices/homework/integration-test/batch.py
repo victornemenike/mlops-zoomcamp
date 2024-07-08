@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
+import os
 import pickle
 import pandas as pd
-import os
+
 
 
 def get_input_path(year, month):
@@ -31,13 +31,17 @@ def read_data(s3_file_location):
     return df
 
 def prepare_data(df, categorical):
+    '''
+        Input -> df, categorical
+        Transforms df
+        Returns -> transformed df
+    '''
     df['duration'] = df.tpep_dropoff_datetime - df.tpep_pickup_datetime
     df['duration'] = df.duration.dt.total_seconds() / 60
 
     df = df[(df.duration >= 1) & (df.duration <= 60)].copy()
 
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
-    
     return df
 
 def save_data(df_result, output_file):
